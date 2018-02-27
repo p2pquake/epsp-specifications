@@ -195,10 +195,29 @@ IMG{border-width : 2px 2px 2px 2px;border-style : solid solid solid solid;
 <P>　当プロトコルでは、地震情報・津波予報の偽装防止、地震感知情報メッセージの連続発信の制限を目的として、公開鍵暗号を使用しています。</P>
 <DL>
   <DT><B>地震情報・津波予報</B>（署名）
-  <DD>PKCS #1 v1.5に準拠したRSASSA(1024bit)を使用しています。ハッシュアルゴリズムはSHA-1です。<BR>（※出来ればECDSA）
+  <DD>PKCS #1 v1.5に準拠したRSASSA(1024bit)を使用しています。ハッシュアルゴリズムはSHA-1です。
   <DT><B>地震感知情報</B>（署名）
-  <DD>PKCS #1 v1.5に準拠したRSASSA(384bit)を使用しています。ハッシュアルゴリズムはSHA-1です。鍵は、有効期限付きでサーバーから各ピアに発行されるため、384bitの強度でも（現在のところ）安全です。</DL>
-<P>　あくまで「署名」目的によるもので、データそのものが暗号化されるわけではありません。</P>
+  <DD>PKCS #1 v1.5に準拠したRSASSA(384bit)を使用しています。ハッシュアルゴリズムはSHA-1です。鍵は、有効期限付きでサーバーから各ピアに発行されるため、384bitの強度でも（現在のところ）安全です。
+</DL>
+<DL>
+  <DT><B>サーバー保証用公開鍵</B> (1024bit)
+  <DD>サーバーが発信する地震情報・津波予報・各地域ピア数の署名検証に使用する公開鍵です。
+  <P class="sample"><B>PKCS #8 (DER)形式</B><BR>
+  <TT>
+MIGdMA0GCSqGSIb3DQEBAQUAA4GLADCBhwKBgQC8p/vth2yb/k9x2/PcXKdb6oI3gAbhvr<BR>
+/HPTOwla5tQHB83LXNF4Y+Sv/Mu4Uu0tKWz02FrLgA5cuJZfba9QNULTZLTNUgUXIB0m/d<BR>
+q5Rx17IyCfLQ2XngmfFkfnRdRSK7kGnIXvO2/LOKD50JsTf2vz0RQIdw6cEmdl+Aga7i8Q<BR>
+IBEQ==</TT>
+  <DT><B>ピア保証用公開鍵</B> (1024bit)
+  <DD>ピアが発信する地震感知情報の署名に用いられる公開鍵の署名検証に使用する公開鍵です。
+  <P class="sample"><B>PKCS #8 (DER)形式</B><BR>
+  <TT>
+MIGdMA0GCSqGSIb3DQEBAQUAA4GLADCBhwKBgQDTJKLLO7wjCHz80kpnisqcPDQvA9voNY<BR>
+5QuAA+bOWeqvl4gmPSiylzQZzldS+n/M5p4o1PRS24WAO+kPBHCf4ETAns8M02MFwxH/Fl<BR>
+QnbvMfi9zutJkQAu3Hq4293rHz+iCQW/MWYB5IfzFBnWtEdjkhqHsGy6sZMMe+qx/F1rcQ<BR>
+IBEQ==
+</TT>
+  </P>
 <P align="right"><A href="#top">目次へ</A></P>
 <H4><A name="base-4">4.「プロトコル時刻」 (Ver0.30r 一部変更)</A></H4>
 <P>　当プロトコルでは、鍵やデータの有効期限は、すべて「プロトコル時刻」を基準にしています。コンピュータの時計のズレ、あるいは時差の影響を受けることのないようにするためです。「プロトコル時刻」において許容される時刻誤差は、プラスマイナス1秒未満です。</P>
