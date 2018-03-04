@@ -2,7 +2,7 @@
 <HTML lang="ja">
 <HEAD>
 <META charset="utf-8">
-<TITLE>Earthquake Peer-to-peer Sharing Protocol (EPSP) 0.33 プロトコル仕様</TITLE>
+<TITLE>Earthquake Peer-to-peer Sharing Protocol (EPSP) 0.34 プロトコル仕様</TITLE>
 <STYLE type="text/css">
 <!--
 BODY{
@@ -61,7 +61,7 @@ IMG{border-width : 2px 2px 2px 2px;border-style : solid solid solid solid;
 
 </HEAD>
 <BODY>
-<H2>Earthquake Peer-to-peer Sharing Protocol (EPSP) 0.33
+<H2>Earthquake Peer-to-peer Sharing Protocol (EPSP) 0.34
 プロトコル仕様</H2>
 <H3><A name="top">目次</A></H3>
 <DL>
@@ -105,7 +105,7 @@ IMG{border-width : 2px 2px 2px 2px;border-style : solid solid solid solid;
   <A href="#peerdata-2">2.署名</A> (Ver0.27r 表記変更)<BR>
   <A href="#peerdata-3">3.地震情報</A> (Ver0.23,0.25,0.27 一部変更)<BR>
   <A href="#peerdata-4">4.津波予報</A><BR>
-  <A href="#peerdata-5">5.各地域ピア数</A><BR>
+  <A href="#peerdata-5">5.各地域ピア数／緊急地震速報 配信試験</A> (Ver0.34 一部変更)<BR>
   <A href="#peerdata-6">6.ユーザー署名の扱い - 署名</A> (Ver0.27r,0.30,0.30r2 一部変更)<BR>
   <A href="#peerdata-7">7.ユーザー署名の扱い - 検証</A> (Ver0.27r,0.30 一部変更)<BR>
   <A href="#peerdata-8">8.「多重発信」の識別</A><BR>
@@ -117,6 +117,8 @@ IMG{border-width : 2px 2px 2px 2px;border-style : solid solid solid solid;
 <P align="right"><A href="#top">目次へ</A></P>
 <H4><A name="base-1">1.バージョン</A></H4>
 <DL>
+  <DT><B>Ver0.34</B>(2018/03/04改定、2008/06/15運用開始済)
+  <DD>・コード561 (各地域ピア数) を拡張し、緊急地震速報 配信試験の伝達に対応しました。
   <DT><B>Ver0.33</B>(2018/02/18改定)
   <DD>・伝言板(コード556)を廃止しました。<BR>・サーバー情報を更新しました。
   <DT><B>Ver0.30r2</B>(2006/04/16改定)
@@ -465,7 +467,7 @@ IBEQ==
     </TR>
     <TR>
       <TD><B>561</B></TD>
-      <TD>各地域のピア数を伝達します。<BR>
+      <TD><B><FONT color="Navy">Ver0.34 変更</FONT></B><BR>各地域のピア数を伝達します。緊急地震速報 配信試験の伝達にも使用します。<BR>
       　データ：データ署名、有効期限、「地域コード,ピア数;地域コード,ピア数...」</TD>
     </TR>
     <TR>
@@ -773,10 +775,12 @@ HH-MM-SS」フォーマットです。</P>
 <P>　予報区は、気象庁の「<A href="http://www.seisvol.kishou.go.jp/eq/" target="_blank">地震・津波の資料</A>」の「<A href="http://www.seisvol.kishou.go.jp/eq/index_t-yohokuinfo.html" target="_blank">津波予報区について</A>」に記載されています。</P>
 <P>　なお、仮に津波予報が各管区気象台から別々に発表された場合、（Webサイトへの更新のタイミングから）その<FONT color="#ff0000"><U>一部を取りこぼす可能性がある重大な問題を含んでいます</U></FONT>。当プロトコルに準拠するソフトウェアを公開される場合は、ヘルプ等に必ずこれを明記してください。</P>
 <P align="right"><A href="#top">目次へ</A></P>
-<H4><A name="peerdata-5">5.各地域ピア数</A></H4>
+<H4><A name="peerdata-5">5.各地域ピア数／緊急地震速報 配信試験</A> (Ver0.34 一部変更)</H4>
 <P>　「各地域ピア数」とは、ピアが通知した「地域コード」を元に、各地域のピア数を示したものです。各地域ピア数もサーバーが「1ピア」として発信します。各地域ピア数はコード561です。データは、コロン区切りで「データ署名」「有効期限」「地域ピア数」です。</P>
 <P class="sample">↓561 25 ABCDEFG:2005/03/27 12-34-56:001,0;002,2;003,5;004,3</P>
 <P>　地域ピア数は、地域ごとに「セミコロン区切り」で分かれています。さらに、地域コードとその地域のピア数が「カンマ区切り」となっています。なお、地域ピア数が0である地域のデータは含まれません。</P>
+<P>　<B><FONT color="Navy">(Ver0.34 一部変更)</FONT></B> 「緊急地震速報 配信試験」は、互換性を保つために各地域ピア数のデータに含む形で発信します。「地域ピア数」データ内に、地域コードが950・ピア数が0のデータがあるかどうかで判断します。なお、地域コードが951・ピア数が0の場合はテスト配信です。</P>
+<P class="sample">↓561 25 ABCDEFG:2005/03/27 12-34-56:001,0;002,2;003,5;004,3;950,0</P>
 <P align="right"><A href="#top">目次へ</A></P>
 <H4><A name="peerdata-6">6.ユーザー署名の扱い - 署名</A> (Ver0.27r,0.30 一部変更)</H4>
 <P>　地震感知情報データは、ユーザーから発信されます。「正しい方法によって発信された」ことを示すために、発信時にデータの署名を行う必要があります。</P>
