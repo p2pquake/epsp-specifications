@@ -8,6 +8,6 @@
 
 GitHub Pagesにて直接表示が可能です。
 
-[Earthquake Peer-to-peer Sharing Protocol (EPSP) 0.34 プロトコル仕様](https://p2pquake-takuya.github.io/epsp-specifications/epsp-specifications.html)
+[Earthquake Peer-to-peer Sharing Protocol (EPSP) 0.34 プロトコル仕様](https://p2pquake.github.io/epsp-specifications/epsp-specifications.html)
 
 
