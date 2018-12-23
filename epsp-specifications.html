@@ -2,7 +2,7 @@
 <HTML lang="ja">
 <HEAD>
 <META charset="utf-8">
-<TITLE>Earthquake Peer-to-peer Sharing Protocol (EPSP) 0.34 プロトコル仕様</TITLE>
+<TITLE>Earthquake Peer-to-peer Sharing Protocol (EPSP) 0.34r プロトコル仕様</TITLE>
 <STYLE type="text/css">
 <!--
 BODY{
@@ -61,7 +61,7 @@ IMG{border-width : 2px 2px 2px 2px;border-style : solid solid solid solid;
 
 </HEAD>
 <BODY>
-<H2>Earthquake Peer-to-peer Sharing Protocol (EPSP) 0.34
+<H2>Earthquake Peer-to-peer Sharing Protocol (EPSP) 0.34r
 プロトコル仕様</H2>
 <H3><A name="top">目次</A></H3>
 <DL>
@@ -71,7 +71,7 @@ IMG{border-width : 2px 2px 2px 2px;border-style : solid solid solid solid;
   <A href="#base-3">3.公開鍵暗号への対応</A><BR>
   <A href="#base-4">4.「プロトコル時刻」</A> (Ver0.30r 一部変更)<BR>
   <A href="#base-5">5.「3桁の数字（コード）」一覧表</A> (Ver0.24,0.26,0.28,0.29 一部変更、0.30 一部追加・変更・廃止)<BR>
-  <A href="#base-6">6.「地域コード」</A> (Ver0.30r 変更)
+  <A href="#base-6">6.「地域コード」</A> (Ver0.30r,0.34r 変更)
   <DT><B><A href="#networkjoin">P2Pネットワークへの参加</A></B>
   <DD><A href="#networkjoin-1">1.サーバーへの接続</A> (Ver0.33 一部変更)<BR>
   <A href="#networkjoin-2">2.プロトコルバージョン等の通知</A><BR>
@@ -117,6 +117,8 @@ IMG{border-width : 2px 2px 2px 2px;border-style : solid solid solid solid;
 <P align="right"><A href="#top">目次へ</A></P>
 <H4><A name="base-1">1.バージョン</A></H4>
 <DL>
+  <DT><B>Ver0.34r</B>(2018/12/23改定)
+  <DD>・地域コード 定義ファイルに緯度・経度情報を追加しました。
   <DT><B>Ver0.34</B>(2018/03/04改定、2008/06/15運用開始済)
   <DD>・コード561 (各地域ピア数) を拡張し、緊急地震速報 配信試験の伝達に対応しました。
   <DT><B>Ver0.33</B>(2018/02/18改定)
@@ -533,12 +535,12 @@ IBEQ==
   </TBODY>
 </TABLE>
 <P align="right"><A href="#top">目次へ</A></P>
-<H4><A name="base-6">6.「地域コード」</A> (Ver0.30r 変更)</H4>
+<H4><A name="base-6">6.「地域コード」</A> (Ver0.30r,0.34r 変更)</H4>
 <P>　「地域コード」は3ケタの数値で、「地震感知情報」の送受信や、「ピア分布」の作成に必要となるものです。地域の区切りに深い意味はありません。なお、今後変更される可能性がありますので、変更に対応しやすい実装を行うことを推奨します。</P>
 <P>　<FONT color="navy"><B>(Ver0.30r重要)</B></FONT>Ver0.30rより、地域コード区分が変更されました。新しい地域区分は、震度速報で用いられる地域区分(計186)を、少しおおまかにしたものです(計138、未設定など含め計141)。</P>
 <DL>
-  <DT><B><A href="epsp-area.csv">epsp-area.csv</A> - 地域コード 定義ファイル</B>（2006/03/14）
-  <DD>　「地域コード」「地域名」「都道府県名」「地方名」をカンマ区切り(CSV方式)で定義しています。「地域名」及び「都道府県名」は必須ではないため、実装で不要な場合は省いても構いません。
+  <DT><B><A href="epsp-area.csv">epsp-area.csv</A> - 地域コード 定義ファイル</B>（2018/12/23）
+  <DD>　「地域コード」「地域名」「都道府県名」「地方名」「緯度」「経度」をカンマ区切り(CSV方式)で定義しています。「地域名」及び「都道府県名」は必須ではないため、実装で不要な場合は省いても構いません。緯度経度は世界測地系で、地域内のある点を指します（中心点ではありません）。
 </DL>
 <P align="right"><A href="#top">目次へ</A></P>
 <H3><A name="networkjoin">P2Pネットワークへの参加</A></H3>
