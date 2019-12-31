@@ -2,7 +2,7 @@
 <HTML lang="ja">
 <HEAD>
 <META charset="utf-8">
-<TITLE>Earthquake Peer-to-peer Sharing Protocol (EPSP) 0.34r プロトコル仕様</TITLE>
+<TITLE>Earthquake Peer-to-peer Sharing Protocol (EPSP) 0.34r2 プロトコル仕様</TITLE>
 <STYLE type="text/css">
 <!--
 BODY{
@@ -61,7 +61,7 @@ IMG{border-width : 2px 2px 2px 2px;border-style : solid solid solid solid;
 
 </HEAD>
 <BODY>
-<H2>Earthquake Peer-to-peer Sharing Protocol (EPSP) 0.34r
+<H2>Earthquake Peer-to-peer Sharing Protocol (EPSP) 0.34r2
 プロトコル仕様</H2>
 <H3><A name="top">目次</A></H3>
 <DL>
@@ -70,14 +70,14 @@ IMG{border-width : 2px 2px 2px 2px;border-style : solid solid solid solid;
   <A href="#base-2">2.基本仕様</A> (Ver0.28 一部変更)<BR>
   <A href="#base-3">3.公開鍵暗号への対応</A><BR>
   <A href="#base-4">4.「プロトコル時刻」</A> (Ver0.30r 一部変更)<BR>
-  <A href="#base-5">5.「3桁の数字（コード）」一覧表</A> (Ver0.24,0.26,0.28,0.29 一部変更、0.30 一部追加・変更・廃止)<BR>
+  <A href="#base-5">5.「3桁の数字（コード）」一覧表</A> (Ver0.24,0.26,0.28,0.29 一部変更、0.30 一部追加・変更・廃止、0.34r2 一部変更)<BR>
   <A href="#base-6">6.「地域コード」</A> (Ver0.30r,0.34r 変更)
   <DT><B><A href="#networkjoin">P2Pネットワークへの参加</A></B>
   <DD><A href="#networkjoin-1">1.サーバーへの接続</A> (Ver0.33 一部変更)<BR>
   <A href="#networkjoin-2">2.プロトコルバージョン等の通知</A><BR>
   <A href="#networkjoin-3">3.ピアIDの暫定割り当て・ポート開放のチェック</A><BR>
   <A href="#networkjoin-4">4.ピアデータの取得・ピアとの接続</A> (Ver0.30 一部追加・変更)<BR>
-  <A href="#networkjoin-5">5.ピアIDの本割り当て・鍵の取得</A> (Ver0.29 一部変更)<BR>
+  <A href="#networkjoin-5">5.ピアIDの本割り当て・鍵の取得</A> (Ver0.29 一部変更、0.34r2 表記変更)<BR>
   <A href="#networkjoin-6">6.各地域ピア数の取得</A> (Ver0.21 新規)<BR>
   <A href="#networkjoin-7">7.プロトコル時刻の取得</A><BR>
   <A href="#networkjoin-8">8.サーバーとの接続終了</A>
@@ -99,7 +99,7 @@ IMG{border-width : 2px 2px 2px 2px;border-style : solid solid solid solid;
   <DD><A href="#peersys-1">1.接続の受け付け</A><BR>
   <A href="#peersys-2">2.接続時の初期通信</A> (Ver0.30 名称変更、一部追加)<BR>
   <A href="#peersys-3">3.ピア同士のエコー</A><BR>
-  <A href="#peersys-4">4.ピアネットワークの調査</A> (Ver0.28 新規)
+  <A href="#peersys-4">4.ピアネットワークの調査</A> (Ver0.28 新規、0.34r2 一部変更)
   <DT><A href="#peerdata"><B>ピアとのデータ通信</B></A>
   <DD><A href="#peerdata-1">1.重複判定・各ピアへの伝達</A><BR>
   <A href="#peerdata-2">2.署名</A> (Ver0.27r 表記変更)<BR>
@@ -109,7 +109,7 @@ IMG{border-width : 2px 2px 2px 2px;border-style : solid solid solid solid;
   <A href="#peerdata-6">6.ユーザー署名の扱い - 署名</A> (Ver0.27r,0.30,0.30r2 一部変更)<BR>
   <A href="#peerdata-7">7.ユーザー署名の扱い - 検証</A> (Ver0.27r,0.30 一部変更)<BR>
   <A href="#peerdata-8">8.「多重発信」の識別</A><BR>
-  <A href="#peerdata-9">9.地震感知情報</A> (Ver0.30 変更)<BR>
+  <A href="#peerdata-9">9.地震感知情報</A> (Ver0.30 変更、0.34r2 表記変更)<BR>
   <A href="#peerdata-10">10.伝言板</A> (Ver0.30 変更、0.33 廃止)
 </DL>
 <H3><A name="base">基本概要</A></H3>
@@ -117,6 +117,8 @@ IMG{border-width : 2px 2px 2px 2px;border-style : solid solid solid solid;
 <P align="right"><A href="#top">目次へ</A></P>
 <H4><A name="base-1">1.バージョン</A></H4>
 <DL>
+  <DT><B>Ver0.34r2</B>(2019/12/31改定)
+  <DD>・3桁の数字（コード）一覧表の誤りを修正しました（232→212）。<BR>・ピアIDの本割り当てと地震感知情報の発信に補足を追記しました。<BR>・調査エコーリプライのデータ形式の誤りを修正しました（接続中のピアID: コロン区切り→カンマ区切り）。
   <DT><B>Ver0.34r</B>(2018/12/23改定)
   <DD>・地域コード 定義ファイルに緯度・経度情報を追加しました。
   <DT><B>Ver0.34</B>(2018/03/04改定、2008/06/15運用開始済)
@@ -229,7 +231,7 @@ IBEQ==
 <P>　差がプラスマイナス1秒以上であれば、コンピュータの時計とプロトコル時刻との差を記憶しておくといった方法で、必要な時に「プロトコル時刻」を算出する必要があります。</P>
 <P align="right"><A href="#top">目次へ</A></P>
 <H4><A name="base-5">5.「3桁の数字（コード）」一覧表 (Ver0.24,0.26,0.28,0.29
-一部変更、Ver0.30 一部追加・変更・廃止)</A></H4>
+一部変更、Ver0.30 一部追加・変更・廃止、Ver0.34r2 一部変更)</A></H4>
 <P>　「x1x」「x2x」は「要求」、「x3x」「x4x」は「返答」、「x5x」「x6x」は「伝達・発信」、「x9x」は「エラー」となっています。</P>
 <P>　注意：下記で「データ：不要」「データ：なし」と記されているのは、プロトコルにおける「データ」部分で何も指定（解析）する必要がないという意味です。逆に言えば、データに何を指定しても構いません。</P>
 <TABLE border="1" width="95%" cellspacing="0">
@@ -608,7 +610,7 @@ IBEQ==
 <P>　データは、ピアごとに「コロン区切り」です。さらに、ピアごとのIPアドレス・ポート番号・<FONT color="Navy">ピアID<B>(Ver0.30新規)</B></FONT>が「カンマ区切り」となっています。これを元に、ピアに接続を試みます。</P>
 <P>　3〜5ピアと接続したか、ピアデータを使い果たしたら、<FONT color="Navy"><B>(Ver0.30新規)</B></FONT>コード155（接続ピアID通知）を送信します。データは、接続したピアのIDです。</P>
 <P align="right"><A href="#top">目次へ</A></P>
-<H4><A name="networkjoin-5">5.ピアIDの本割り当て・鍵の取得</A> (Ver0.29 一部変更)</H4>
+<H4><A name="networkjoin-5">5.ピアIDの本割り当て・鍵の取得</A> (Ver0.29 一部変更、Ver0.34r2 表記変更)</H4>
 <P>　ピアとの接続が完了した場合、暫定的に割り当てられていたピアIDの本割り当てを要求します。コード116（ピアIDの本割り当て要求）を送信します。データは、ピアID、ポート番号、地域コード、接続数、受け入れ可能な最大接続数です。</P>
 <P class="sample">↑ 116 1 25:6911:901:2:6:5,8,3<BR>
 ↓ 236 1 29</P>
@@ -718,7 +720,7 @@ HH-MM-SS」フォーマットです。</P>
 ↓ 631 1</P>
 <P>　10〜30秒以内に相手から応答が返らない場合や、ソケット状態が「エラー」となっている場合は、ピアとの接続を切断してください。</P>
 <P align="right"><A href="#top">目次へ</A></P>
-<H4><A name="peersys-4">4.ピアネットワークの調査</A> (Ver0.28 新規)</H4>
+<H4><A name="peersys-4">4.ピアネットワークの調査</A> (Ver0.28 新規、Ver0.34r2 一部変更)</H4>
 <P>　ピアとピアとの繋がりを視覚化します。いわばEPSP上のtracerouteですが、仕組みは若干異なります。</P>
 <OL>
   <LI>調査したいピアは、「調査エコー(コード615)」を発信します。データには、発信元ピアIDと、調査エコーを識別するための一意な数を指定します。
@@ -835,7 +837,7 @@ HH-MM-SS」フォーマットです。</P>
 <P>　悪意のあるなしに関わらず、1人によって地震感知情報が大量に発信されれば、地震感知情報は使い物にならなくなってしまいます。このようなことを防ぐために、受信側で何らかの対策が必要となります。</P>
 <P>　例えば、地震感知情報では「同じ公開鍵によるものは1分に1回しか受け付けない」ようにします。これにより、何者かが1分に100回の地震感知情報を発信しても、100回のうち99回は「無効」として処理されるため、機能に支障をきたすことがなくなります。実際には、5〜10分に1回しか受け付けないぐらいでも良いでしょう。</P>
 <P align="right"><A href="#top">目次へ</A></P>
-<H4><A name="peerdata-9">9.地震感知情報</A> (Ver0.30 変更)</H4>
+<H4><A name="peerdata-9">9.地震感知情報</A> (Ver0.30 変更、Ver0.34r2 表記変更)</H4>
 <P>　地震感知情報は、ユーザーによる「揺れた」という情報のことです。コード555で、<B><FONT color="Navy">(Ver0.30変更)</FONT></B>データは「データ署名」「有効期限」「公開鍵」「鍵署名」「鍵期限」「感知情報データ」です。「感知情報データ」には、カンマ区切りで「ユニーク値」「地域コード」が入っています。なお、署名が出来ない場合は「有効期限」「感知情報データ」以外は空文字列とします。</P>
 <P class="sample">↓ 555 13 ABCDEFG:2005/03/27 12-34-56:ABCEFFG:ABCDEFG:2005/03/14
 12-34-56:2503151124,901</P>
