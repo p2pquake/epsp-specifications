@@ -8,9 +8,10 @@
 
 GitHub Pagesにて直接表示が可能です。
 
-[Earthquake Peer-to-peer Sharing Protocol (EPSP) 0.34 プロトコル仕様](https://p2pquake.github.io/epsp-specifications/epsp-specifications.html)
+[Earthquake Peer-to-peer Sharing Protocol (EPSP) プロトコル仕様](https://p2pquake.github.io/epsp-specifications/epsp-specifications.html)
 
 ## 謝辞
 
 - @anatawa12 (bug report)
+- @ingen084 (bug report)
 
