@@ -14,4 +14,5 @@ GitHub Pagesにて直接表示が可能です。
 
 - @anatawa12 (bug report)
 - @ingen084 (bug report)
+- @lambdastar314 (bug report and contribute)
 
