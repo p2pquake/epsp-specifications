@@ -1,8 +1,12 @@
 openapi: "3.0.2"
 info:
   title: "P2P地震情報 API仕様書"
-  version: "2.1.0"
-  description: "[気象庁 | 著作権・リンク・個人情報保護について](http://www.jma.go.jp/jma/kishou/info/coment.html)に従い、気象庁が発表した地震情報・津波予報を一部加工して提供しています。<br>本APIは、気象庁 利用規約に従っていれば、商用・非商用問わず自由にご利用いただいて構いません。"
+  version: "2.1.1"
+  description: |
+    - 二次利用については [二次利用できます · P2P地震情報](https://www.p2pquake.net/secondary_use/) をご確認ください。
+    - 以下のレート制限があります。超えるとレスポンスが遅くなったり拒否 (HTTP ステータスコード 429) される場合があります。
+      - /history: 60 リクエスト/分 (IP アドレス毎)
+      - /jma: 10 リクエスト/分 (IP アドレス毎)
 servers:
   - url: https://api.p2pquake.net/v2
 paths:
@@ -66,6 +70,8 @@ paths:
       description: |
         地震情報を返却します。デフォルトは新しい順に最大10件です。
         データは2015年1月10日から提供しています。
+
+        過去データの履歴表示・検索に最適化しています。P2P地震情報 API (`/history` や `/ws`) と比べて約 60 秒の遅延があります。
       responses:
         200:
           description: 地震情報リスト
@@ -113,6 +119,8 @@ paths:
       description: |
         津波予報を返却します。デフォルトは新しい順に最大10件です。
         データは2016年11月22日から提供しています。
+
+        過去データの履歴表示・検索に最適化しています。P2P地震情報 API (`/history` や `/ws`) と比べて約 60 秒の遅延があります。
       responses:
         200:
           description: 津波予報リスト
