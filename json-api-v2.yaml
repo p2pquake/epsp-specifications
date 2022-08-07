@@ -630,6 +630,9 @@ components:
           properties:
             code:
               description: 情報コード。常に556です。
+            test:
+              type: boolean
+              description: テストかどうか。
             earthquake:
               type: object
               description: 地震の情報。ただし、取消の場合は値は設定されません。
