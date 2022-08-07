@@ -740,8 +740,7 @@ components:
                       - 70(震度7)
                       - 99(～程度以上)
                   kindCode:
-                    type: integer
-                    format: int32
+                    type: string
                     description: 警報コード
                     enum:
                       - 10 (緊急地震速報（警報） 主要動について、未到達と予測)
