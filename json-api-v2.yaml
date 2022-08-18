@@ -31,6 +31,7 @@ paths:
                     - $ref: "#/components/schemas/JMATsunami"
                     - $ref: "#/components/schemas/Areapeers"
                     - $ref: "#/components/schemas/EEWDetection"
+                    - $ref: "#/components/schemas/EEW"
                     - $ref: "#/components/schemas/Userquake"
                     - $ref: "#/components/schemas/UserquakeEvaluation"
         400:
@@ -60,6 +61,7 @@ paths:
                   - $ref: "#/components/schemas/JMATsunami"
                   - $ref: "#/components/schemas/Areapeers"
                   - $ref: "#/components/schemas/EEWDetection"
+                  - $ref: "#/components/schemas/EEW"
                   - $ref: "#/components/schemas/Userquake"
                   - $ref: "#/components/schemas/UserquakeEvaluation"
   /jma/quake:
@@ -179,7 +181,7 @@ components:
       name: codes
       in: query
       required: false
-      description: 取得したい情報の情報コード (デフォルトはすべて)。値は551(地震情報)、552(津波予報)、554(緊急地震速報 発表検出)、555(各地域ピア数)、561(地震感知情報)、9611(地震感知情報 解析結果)です。
+      description: 取得したい情報の情報コード (デフォルトはすべて)。値は551(地震情報)、552(津波予報)、554(緊急地震速報 発表検出)、555(各地域ピア数)、556(緊急地震速報（警報）)、561(地震感知情報)、9611(地震感知情報 解析結果)です。
       schema:
         type: array
         items:
@@ -617,6 +619,139 @@ components:
               enum:
                 - "Full (チャイム＋音声)"
                 - "Chime (チャイム (未実装))"
+    EEW:
+      allOf:
+        - $ref: "#/components/schemas/BasicData"
+        - type: object
+          description: 緊急地震速報（警報）です。 **ただし、内容や配信品質は無保証です。** なお、多くの項目は [気象庁防災情報XMLフォーマット ｜ 技術資料](https://xml.kishou.go.jp/tec_material.html) の定義そのままです。スキーマは今後拡張する可能性があります。
+          required:
+            - issue
+            - cancelled
+          properties:
+            code:
+              description: 情報コード。常に556です。
+            test:
+              type: boolean
+              description: テストかどうか。
+            earthquake:
+              type: object
+              description: 地震の情報。ただし、取消の場合は値は設定されません。
+              required:
+                - originTime
+                - arrivalTime
+                - hypocenter
+              properties:
+                originTime:
+                  type: string
+                  description: 地震発生時刻
+                arrivalTime:
+                  type: string
+                  description: 地震発現時刻
+                condition:
+                  type: string
+                  description: 仮定震源要素の場合、値は "仮定震源要素" となります。
+                hypocenter:
+                  type: object
+                  description: 地震の位置要素
+                  properties:
+                    name:
+                      type: string
+                      description: 震央地名
+                    reduceName:
+                      type: string
+                      description: 短縮用震央地名
+                    latitude:
+                      type: number
+                      description: 緯度。震源情報が存在しない場合は-200となります。
+                    longitude:
+                      type: number
+                      description: 経度。震源情報が存在しない場合は-200となります。
+                    depth:
+                      type: integer
+                      format: int32
+                      description: 深さ(km)。震源情報が存在しない場合は-1となります。
+                    magnitude:
+                      type: number
+                      description: マグニチュード。震源情報が存在しない場合は-1となります。
+            issue:
+              type: object
+              required:
+                - time
+                - eventId
+                - serial
+              properties:
+                time:
+                  type: string
+                  description: 発表時刻
+                eventId:
+                  type: string
+                  description: 識別情報
+                serial:
+                  type: string
+                  description: 情報番号
+            cancelled:
+              type: boolean
+              description: 取消
+            areas:
+              type: array
+              description: 細分区域
+              items:
+                type: object
+                required:
+                  - pref
+                  - name
+                  - scaleFrom
+                  - scaleTo
+                properties:
+                  pref:
+                    type: string
+                    description: 都道府県名
+                  name:
+                    type: string
+                    description: 地域名（細分区域名）
+                  scaleFrom:
+                    type: integer
+                    format: int32
+                    description: 最大予測震度の下限
+                    enum:
+                      - -1(不明)
+                      - 0(震度0)
+                      - 10(震度1)
+                      - 20(震度2)
+                      - 30(震度3)
+                      - 40(震度4)
+                      - 45(震度5弱)
+                      - 50(震度5強)
+                      - 55(震度6弱)
+                      - 60(震度6強)
+                      - 70(震度7)
+                  scaleTo:
+                    type: integer
+                    format: int32
+                    description: 最大予測震度の上限
+                    enum:
+                      - -1(不明)
+                      - 0(震度0)
+                      - 10(震度1)
+                      - 20(震度2)
+                      - 30(震度3)
+                      - 40(震度4)
+                      - 45(震度5弱)
+                      - 50(震度5強)
+                      - 55(震度6弱)
+                      - 60(震度6強)
+                      - 70(震度7)
+                      - 99(～程度以上)
+                  kindCode:
+                    type: string
+                    description: 警報コード
+                    enum:
+                      - 10 (緊急地震速報（警報） 主要動について、未到達と予測)
+                      - 11 (緊急地震速報（警報） 主要動について、既に到達と予測)
+                      - 19 (緊急地震速報（警報） 主要動の到達予想なし（PLUM法による予想）)
+                  arrivalTime:
+                    type: string
+                    description: 主要動の到達予測時刻
     UserquakeEvaluation:
       allOf:
         - $ref: "#/components/schemas/BasicData"
