@@ -604,6 +604,13 @@ components:
                     type: integer
                     format: int32
                     description: ピア数
+          example:
+            code: 555
+            areas:
+              - id: 655
+                peer: 10
+              - id: 670
+                peer: 5
     EEWDetection:
       allOf:
         - $ref: "#/components/schemas/BasicData"
@@ -620,6 +627,9 @@ components:
               enum:
                 - "Full (チャイム＋音声)"
                 - "Chime (チャイム (未実装))"
+          example:
+            code: 554
+            type: "Full"
     EEW:
       allOf:
         - $ref: "#/components/schemas/BasicData"
@@ -627,11 +637,13 @@ components:
           description: |
             緊急地震速報（警報）の内容です。ただし、以下の点に留意してください。
             - **内容や配信品質は無保証です。**緊急地震速報（警報）としての利活用は非推奨です。
-              - 提供サーバは冗長化しておらず、欠落のリスクがあります。
-              - WebSocket API では 100ms 程度、 JSON API では 1000ms 程度遅延します。高負荷時はさらに遅延します。
-              - 地震の規模や予測震度なども提供しますが、緊急地震速報（警報）では発表しない内容です（参考：[気象庁｜緊急地震速報｜緊急地震速報（警報）及び（予報）について](https://www.data.jma.go.jp/svd/eew/data/nc/shikumi/shousai.html)）。
-            - 多くの項目は[気象庁防災情報XMLフォーマット ｜ 技術資料](https://xml.kishou.go.jp/tec_material.html)の定義そのままです。
+            - 多くの項目は[気象庁防災情報XMLフォーマット ｜ 技術資料](https://xml.kishou.go.jp/tec_material.html)の定義そのままです。地震の規模や予測震度なども提供しますが、緊急地震速報（警報）では発表されない内容です（参考：[気象庁｜緊急地震速報｜緊急地震速報（警報）及び（予報）について](https://www.data.jma.go.jp/svd/eew/data/nc/shikumi/shousai.html)）。
             - スキーマは今後拡張する可能性があります。
+
+            遅延や欠落のリスクは以下の通りです。
+            - 処理遅延: WebSocket API は約 70ms 、 JSON API は約 1000 ms （高負荷時はさらに遅延します）
+            - サーバ所在地: 東京 (Linode Tokyo 2)
+            - 欠落リスク: サーバや受信プログラムは冗長化しておらず、障害時は配信できず、復旧時の再配信もありません
           required:
             - issue
             - cancelled
@@ -675,9 +687,10 @@ components:
                       type: number
                       description: 経度。震源情報が存在しない場合は-200となります。
                     depth:
-                      type: integer
-                      format: int32
-                      description: 深さ(km)。震源情報が存在しない場合は-1となります。
+                      type: number
+                      description: |
+                        深さ(km)。震源情報が存在しない場合は-1となります。  
+                        システムの都合で小数点が付きますが整数部のみ有効です。
                     magnitude:
                       type: number
                       description: マグニチュード。震源情報が存在しない場合は-1となります。
@@ -713,14 +726,15 @@ components:
                 properties:
                   pref:
                     type: string
-                    description: 都道府県名
+                    description: 府県予報区
                   name:
                     type: string
                     description: 地域名（細分区域名）
                   scaleFrom:
-                    type: integer
-                    format: int32
-                    description: 最大予測震度の下限
+                    type: number
+                    description: |
+                      最大予測震度の下限  
+                      システムの都合で小数点が付きますが整数部のみ有効です。
                     enum:
                       - -1(不明)
                       - 0(震度0)
@@ -734,9 +748,10 @@ components:
                       - 60(震度6強)
                       - 70(震度7)
                   scaleTo:
-                    type: integer
-                    format: int32
-                    description: 最大予測震度の上限
+                    type: number
+                    description: |
+                      最大予測震度の上限  
+                      システムの都合で小数点が付きますが整数部のみ有効です。
                     enum:
                       - -1(不明)
                       - 0(震度0)
@@ -760,6 +775,32 @@ components:
                   arrivalTime:
                     type: string
                     description: 主要動の到達予測時刻
+          example:
+            code: 556
+            cancelled: false
+            earthquake:
+              condition: ""
+              hypocenter:
+                name: "宗谷地方北部"
+                reduceName: "北海道道北"
+                latitude: 44.9
+                longitude: 142.1
+                depth: 10.0
+                magnitude: 5.5
+              originTime: "2022/08/11 00:53:00"
+              arrivalTime: "2022/08/11 00:53:10"
+            issue:
+              time: "2022/08/11 00:53:24"
+              eventId: "20220811005302"
+              serial: "1"
+            areas:
+              - pref: "北海道道北"
+                name: "上川地方北部"
+                scaleFrom: 45.0
+                scaleTo: 45.0
+                kindCode: "11"
+                arrivalTime: null
+
     UserquakeEvaluation:
       allOf:
         - $ref: "#/components/schemas/BasicData"
