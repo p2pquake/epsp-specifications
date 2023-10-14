@@ -1,7 +1,7 @@
 openapi: "3.0.2"
 info:
   title: "P2P地震情報 API仕様書"
-  version: "2.1.1"
+  version: "2.2.0"
   description: |
     - 二次利用については [二次利用できます · P2P地震情報](https://www.p2pquake.net/secondary_use/) をご確認ください。
     - 以下のレート制限があります。超えるとレスポンスが遅くなったり拒否 (HTTP ステータスコード 429) される場合があります。
@@ -542,6 +542,38 @@ components:
                   name:
                     type: string
                     description: 津波予報区名。[気象庁｜津波予報区について](http://www.data.jma.go.jp/svd/eqev/data/joho/t-yohokuinfo.html)を参照。
+                  firstHeight:
+                    type: object
+                    description: 津波の到達予想時刻（2023年11月01日から提供予定）
+                    properties:
+                      arrivalTime:
+                        type: string
+                        description: 第1波の到達予想時刻
+                      condition:
+                        type: string
+                        enum:
+                        - ただちに津波来襲と予測
+                        - 津波到達中と推測
+                        - 第１波の到達を確認
+                  maxHeight:
+                    type: object
+                    description: 予想される津波の高さ（2023年11月01日から提供予定）
+                    properties:
+                      description:
+                        type: string
+                        description: 文字列表現
+                        enum:
+                        - 巨大
+                        - 高い
+                        - １０ｍ超
+                        - １０ｍ
+                        - ５ｍ
+                        - ３ｍ
+                        - １ｍ
+                        - ０．２ｍ未満
+                      value:
+                        type: number
+                        description: 数値表現。文字列表現が「巨大」「高い」の場合は設定されません。また、「０．２ｍ未満」は「0.2」となります。
           example:
             code: 552
             cancelled: false
@@ -553,9 +585,19 @@ components:
               - grade: Warning
                 immediate: true
                 name: 福島県
+                firstHeight:
+                  condition: 津波到達中と推測
+                maxHeight:
+                  description: ３ｍ
+                  value: 3
               - grade: Watch
                 immediate: false
                 name: 青森県太平洋沿岸
+                firstHeight:
+                  arrivalTime: "2019/06/18 22:40:00"
+                maxHeight:
+                  description: １ｍ
+                  value: 1
     JMATsunamis:
       type: array
       items:
