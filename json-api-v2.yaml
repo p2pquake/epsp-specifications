@@ -3,12 +3,30 @@ info:
   title: "P2P地震情報 API仕様書"
   version: "2.2.0"
   description: |
-    - 二次利用については [二次利用できます · P2P地震情報](https://www.p2pquake.net/secondary_use/) をご確認ください。
+    - 気象庁の「緊急地震速報（警報）」「地震情報」「津波予報」と、P2P地震情報ユーザーの「地震感知情報」が取得できます。
+    - 商用・非商用問わず無償（無料）でご利用になれます。 [二次利用できます · P2P地震情報](https://www.p2pquake.net/secondary_use/) をご確認ください。
     - 以下のレート制限があります。超えるとレスポンスが遅くなったり拒否 (HTTP ステータスコード 429) される場合があります。
       - /history: 60 リクエスト/分 (IP アドレス毎)
       - /jma: 10 リクエスト/分 (IP アドレス毎)
+    - 動作確認用に、サンドボックスのエンドポイントを用意しています。
+      <details><summary>サンドボックス詳細</summary>
+      - 配信仕様
+        - 間隔: 約 30 秒に 1 回
+        - 内容: 2023年4月1日～10月19日 の緊急地震速報（警報）・地震情報・津波予報を順番に配信
+        - 補足: 新しい仕様に先行して対応
+      - その他
+        - 無保証です。
+        - URL は Servers プルダウンをご確認ください。
+        - WebSocket エンドポイントは 10 分で強制的に切断されます。また、同時接続数を制限しています。
+      </details>
+
 servers:
   - url: https://api.p2pquake.net/v2
+    description: 本番環境（実際の情報を配信）
+  - url: https://api-v2-sandbox.p2pquake.net/v2
+    description: サンドボックス（ /history のみ有効）
+  - url: wss://api-realtime-sandbox.p2pquake.net/v2
+    description: WebSocket サンドボックス（ /ws のみ有効）
 paths:
   /history:
     get:
