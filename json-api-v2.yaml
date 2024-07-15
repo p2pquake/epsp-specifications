@@ -1,7 +1,7 @@
 openapi: "3.0.2"
 info:
   title: "P2P地震情報 API仕様書"
-  version: "2.2.1"
+  version: "2.3.0"
   description: |
     - 気象庁の「緊急地震速報（警報）」「地震情報」「津波予報」と、P2P地震情報ユーザーの「地震感知情報」が取得できます。
     - 商用・非商用問わず無償（無料）でご利用になれます。 [二次利用できます · P2P地震情報](https://www.p2pquake.net/secondary_use/) をご確認ください。
@@ -340,6 +340,7 @@ components:
           required:
             - issue
             - earthquake
+            - comments
           properties:
             code:
               description: 情報コード。常に551です。
@@ -476,6 +477,13 @@ components:
                       - 55(震度6弱)
                       - 60(震度6強)
                       - 70(震度7)
+            comments:
+              type: object
+              description: 付加文（2024年8月下旬から提供予定）
+              properties:
+                freeFormComment:
+                  type: string
+                  description: 自由付加文。ない場合は空文字列となります。気象庁の発表電文に含まれる自由付加文をそのまま提供しており、火山噴火に伴って発表される遠地地震に関する情報では、「大規模な噴火が発生しました」という文言が含まれます（2024年7月現在）。
           example:
             id: 5ee1681202add671a1e1ae39
             code: 551
@@ -505,6 +513,8 @@ components:
                 isArea: false
                 pref: 沖縄県
                 scale: 10
+            comments:
+              freeFormComment: ""
     JMAQuakes:
       type: array
       items:
