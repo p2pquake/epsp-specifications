@@ -1,7 +1,7 @@
 openapi: "3.0.2"
 info:
   title: "P2P地震情報 API仕様書"
-  version: "2.2.0"
+  version: "2.2.1"
   description: |
     - 気象庁の「緊急地震速報（警報）」「地震情報」「津波予報」と、P2P地震情報ユーザーの「地震感知情報」が取得できます。
     - 商用・非商用問わず無償（無料）でご利用になれます。 [二次利用できます · P2P地震情報](https://www.p2pquake.net/secondary_use/) をご確認ください。
@@ -562,7 +562,7 @@ components:
                     description: 津波予報区名。[気象庁｜津波予報区について](http://www.data.jma.go.jp/svd/eqev/data/joho/t-yohokuinfo.html)を参照。
                   firstHeight:
                     type: object
-                    description: 津波の到達予想時刻（2023年11月01日から提供予定）
+                    description: 津波の到達予想時刻（2023年11月01日から提供）
                     properties:
                       arrivalTime:
                         type: string
@@ -575,7 +575,7 @@ components:
                         - 第１波の到達を確認
                   maxHeight:
                     type: object
-                    description: 予想される津波の高さ（2023年11月01日から提供予定）
+                    description: 予想される津波の高さ（2023年11月01日から提供）
                     properties:
                       description:
                         type: string
